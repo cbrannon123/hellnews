@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getPosts } from '../services/api';
+import { getPosts, upvotePost } from '../services/api';
 import { Link } from 'react-router-dom';
 
 class Index extends Component {
@@ -18,15 +18,38 @@ class Index extends Component {
     })
   }
 
+  handleUpVote= (id, type) => {
+    var self = this;
+    upvotePost(id, type).then(function(post) {
+      getPosts().then(function(json) {
+        self.setState({posts: json})
+      })
+    })
+    
+  }
+
+  handleDownVote= (id, type) => {
+    var self = this;
+
+    upvotePost(id, type).then(function(json) {
+      getPosts().then(function(json) {
+        self.setState({posts: json})
+      })
+    })
+
+  }
+
   render() {
     var posts = this.state.posts.map((post, idx) => {
       return (
         <li key={idx}>
           <Link to={`/posts/${post._id}`}>{post.title}</Link>
-          <a heref="#" className='btn btn-success'>upvote <i className='fa fa-thumbs-up'></i></a>
+          <br/>
+          <a href="#" className='btn btn-success' onClick={() => this.handleUpVote(post._id, 'upvote')}>upvote <i className='fa fa-thumbs-up'></i></a>
+          <br />
           <br />
           <span>Upvotes: {post.upvotes}</span>
-          <a href="#" className='btn btn-danger'>downvote <i className='fa fa-thumbs-down'></i></a>
+          <a href="#" className='btn btn-danger' onClick={() => this.handleDownVote(post._id, 'downvote')}>downvote <i className='fa fa-thumbs-down'></i></a>
         </li>
       )  
     });
