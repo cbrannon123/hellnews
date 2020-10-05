@@ -12,7 +12,8 @@ module.exports = {
 };
 
 function updatePost(req, res) {
-  Post.findByIdAndUpdate(req.params.id, req.body, {new: true}).then(function(post) {
+  Post.findByIdAndUpdate(req.params.id, req.body, 
+    {new: true}).then(function(post) {
     res.status(200).json(post);
   });
 }
@@ -34,6 +35,7 @@ function createPost(req, res) {
     res.status(201).json(post);
   });
 }
+
 
 function getAllPosts(req, res) {
   Post.find({}).then(function(posts) {

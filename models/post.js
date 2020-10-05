@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 
 var CommentSchema = new mongoose.Schema({
-  body: String
+  body: String,
+  require: true
 }, {
   timestamps: true
 });
